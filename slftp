@@ -15,8 +15,9 @@ LFTP_CMD="mirror $SRC_DIR $DEST_DIR/; exit"
 SCREEN_NAME=${SRC_DIR##*/}
 if ! screen -list | egrep "\<[0-9]+\.$SCREEN_NAME\>" > /dev/null; then
     screen -dmS $SCREEN_NAME
-    screen -S $SCREEN_NAME -p 0 -X screen lftp -e "$LFTP_CMD" \
-        sftp://$SERVER_NAME
+    screen -S $SCREEN_NAME -p 0 -X stuff \
+    "lftp -e '$LFTP_CMD' sftp://$SERVER_NAME
+    "
 else
     echo "Screen session \"${SCREEN_NAME}\" already exists." >&2
     exit 1
