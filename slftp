@@ -11,11 +11,11 @@ USAGE="usage: slftp SRC_DIR DEST_DIR SERVER_NAME"
 SRC_DIR=$1
 DEST_DIR=$(echo ${2%%/} | tr -s '/')
 SERVER_NAME=$3
-LFTP_CMD="mirror $SRC_DIR $DEST_DIR/; exit"
+LFTP_CMD="mirror \"$SRC_DIR\" $DEST_DIR/; exit"
 SCREEN_NAME=${SRC_DIR##*/}
 if ! screen -list | egrep "\<[0-9]+\.$SCREEN_NAME\>" > /dev/null; then
-    screen -dmS $SCREEN_NAME
-    screen -S $SCREEN_NAME -p 0 -X stuff \
+    screen -dmS "$SCREEN_NAME"
+    screen -S "$SCREEN_NAME" -p 0 -X stuff \
     "lftp -e '$LFTP_CMD' sftp://$SERVER_NAME
     "
 else
